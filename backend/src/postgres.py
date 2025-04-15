@@ -1,11 +1,22 @@
 from urllib.parse import urlparse, parse_qs
 import psycopg
+from psycopg.types.json import Jsonb
+from dataclasses import dataclass
+from typing import Generic, TypeVar, Optional
+
+T = TypeVar("T")
+
+
+@dataclass
+class Extremes(Generic[T]):
+    min_value: T
+    max_value: T
 
 
 class Postgres:
     def __init__(self, url: str):
         print(f"Postgres url: {url}")
-        parsed = urlparse(url.replace("jdbc:", "", 1))
+        parsed = urlparse(url)
         parsed_query = parse_qs(parsed.query)
         dbname=parsed.path.lstrip("/") if parsed.path else "postgres"
         self.client=psycopg.connect(
@@ -25,10 +36,26 @@ class Postgres:
         rows = cursor.fetchall()
         return rows
 
+    def insert_data(self, table_name:str, data:list):
+        cursor = self.client.cursor()
+        sql = f"INSERT INTO {table_name} (id, data) VALUES (%s, %s)"
+        data_jsonb=((record[0], Jsonb(record[1])) for record in data)
+        cursor.executemany(sql, data_jsonb)
+
+
     def create_table_as(self, new_table_name: str, source_table_name: str):
         self.command(f"CREATE TABLE {new_table_name} AS SELECT * FROM {source_table_name} WHERE FALSE")
 
+    def drop_table(self, table_name: str):
+        self.command(f"DROP TABLE IF EXISTS {table_name} ")
 
+    def get_extremes(self, table_name: str, column_name: str) -> Optional[Extremes]:
+        sql = f"SELECT Count(*),MIN({column_name}),MAX({column_name}) FROM {table_name}"
+        [count, min_value, max_value] = self.query(sql)[0]
+        if count > 0:
+            return Extremes(min_value, max_value)
+        else:
+            return None
 
 
 

@@ -3,4 +3,4 @@ CREATE TABLE IF NOT EXISTS payloads (
     data JSONB
 );
 
-CREATE INDEX by_data ON payloads USING GIN (data);
+CREATE INDEX payload_by_data ON payloads USING GIN (data);

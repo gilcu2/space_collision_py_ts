@@ -55,3 +55,16 @@ class DiscosWebClient:
         api_result = self.get('launches', params)
         pagination = api_result['meta']['pagination']
         return Result(api_result['data'], pagination['currentPage'], pagination['totalPages'])
+
+    def get_reentries(self, begin: date, end: date,
+                     page_size: int = 30, page: int = 1
+                     ) -> Result:
+        params = {
+            'filter': f"ge(epoch,epoch:'{begin}')&le(epoch,epoch:'{end}')",
+            'page[size]': f'{page_size}',
+            'page[number]': f'{page}',
+
+        }
+        api_result = self.get('reentries', params)
+        pagination = api_result['meta']['pagination']
+        return Result(api_result['data'], pagination['currentPage'], pagination['totalPages'])
