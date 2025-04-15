@@ -3,4 +3,4 @@ CREATE TABLE IF NOT EXISTS reentries (
     data JSONB
 );
 
-CREATE INDEX reentries_by_data ON reentries USING GIN (data);
+CREATE INDEX reentries_by_date ON reentries (((data->>'epoch')::date));

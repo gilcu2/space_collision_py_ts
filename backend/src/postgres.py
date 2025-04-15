@@ -49,13 +49,23 @@ class Postgres:
     def drop_table(self, table_name: str):
         self.command(f"DROP TABLE IF EXISTS {table_name} ")
 
-    def get_extremes(self, table_name: str, column_name: str) -> Optional[Extremes]:
-        sql = f"SELECT Count(*),MIN({column_name}),MAX({column_name}) FROM {table_name}"
+    def get_extremes(self, table_name: str, field_name: str) -> Optional[Extremes]:
+        sql = f"SELECT Count(*),MIN(data->>{field_name}),MAX(data->>{field_name}) FROM {table_name}"
         [count, min_value, max_value] = self.query(sql)[0]
         if count > 0:
             return Extremes(min_value, max_value)
         else:
             return None
+
+    def get_number_by_day(self, table_name: str, date_field: str):
+        sql=f"""
+            SELECT (data->>'{date_field}')::date AS event_date , Count(*) AS count 
+            FROM {table_name} 
+            GROUP BY event_date 
+            ORDER BY event_date
+            """
+        return self.query(sql)
+
 
 
 

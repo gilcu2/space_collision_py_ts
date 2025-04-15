@@ -33,5 +33,15 @@ def download_data(begin: date = datetime.strptime('2025-01-01', "%Y-%m-%d").date
     return {'launches': len(launches_data), 'reentries': len(reentries_data)}
 
 
+@app.get("/download_data/")
+def get_space_objects_variation(begin: date = datetime.strptime('2025-01-01', "%Y-%m-%d").date(),
+                                end: date = datetime.strptime('2025-01-31', "%Y-%m-%d").date(),
+                                suffix: Optional[str] = None,
+                                ) -> dict:
+    launches_per_day
+
+    return {'launches': len(launches_data), 'reentries': len(reentries_data)}
+
+
 if __name__ == "__main__":
     uvicorn.run("kpi_api:app", host='0.0.0.1', port=8000, reload=True)

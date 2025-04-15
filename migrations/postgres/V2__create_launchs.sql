@@ -3,4 +3,4 @@ CREATE TABLE IF NOT EXISTS launches (
     data JSONB
 );
 
-CREATE INDEX launches_by_data ON launches USING GIN (data);
+CREATE INDEX launches_by_data ON launches (((data->>'epoch')::date));
