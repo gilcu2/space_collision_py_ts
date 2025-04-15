@@ -1,9 +1,8 @@
 from fastapi import FastAPI
-from starlette.responses import RedirectResponse
 from typing_extensions import Optional
 import uvicorn
 import os
-from datetime import datetime, date
+from datetime import datetime, date, timedelta
 from discoweb_client import DiscosWebClient
 
 from postgres import Postgres
@@ -33,14 +32,24 @@ def download_data(begin: date = datetime.strptime('2025-01-01', "%Y-%m-%d").date
     return {'launches': len(launches_data), 'reentries': len(reentries_data)}
 
 
-@app.get("/download_data/")
+@app.get("/get_space_objects_variation/")
 def get_space_objects_variation(begin: date = datetime.strptime('2025-01-01', "%Y-%m-%d").date(),
                                 end: date = datetime.strptime('2025-01-31', "%Y-%m-%d").date(),
                                 suffix: Optional[str] = None,
-                                ) -> dict:
-    launches_per_day
+                                ) -> list[tuple]:
+    launches_per_day=postgres.get_number_by_day(f'launches{suffix}')
+    reentries_per_day=postgres.get_number_by_day(f'reentries{suffix}')
 
-    return {'launches': len(launches_data), 'reentries': len(reentries_data)}
+    launches_dict=dict(launches_per_day)
+    reentries_dict=dict(reentries_per_day)
+
+    variations=[]
+    for i in range((end - begin).days + 1):
+        day = begin + timedelta(days=i)
+        variations.append((day,launches_dict.get(day,0) - reentries_dict.get(day,0)))
+
+
+    return variations
 
 
 if __name__ == "__main__":
