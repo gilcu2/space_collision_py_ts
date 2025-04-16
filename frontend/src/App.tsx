@@ -43,7 +43,7 @@ function App() {
 
     return (
         <div style={{ padding: "2rem", fontFamily: "Arial", width: '100%', height: 'auto' }}>
-            <h2>🌤️ Variation of objects in space</h2>
+            <h2>Variation of objects in space</h2>
             <div style={{ marginBottom: "1rem" }}>
                 <input type="date" value={startDate} onChange={e => setStartDate(e.target.value)} />
                 <input type="date" value={endDate} onChange={e => setEndDate(e.target.value)} />
@@ -59,7 +59,7 @@ function App() {
                     <LineChart data={data}>
                         <CartesianGrid stroke="#ccc" />
                         <XAxis dataKey="date" />
-                        <YAxis label={{ value: "°C", angle: -90, position: "insideLeft" }} />
+                        <YAxis label={{ value: "Objects", angle: -90, position: "insideLeft" }} />
                         <Tooltip />
                         <Line type="monotone" dataKey="variation" stroke="#ff7300" />
                     </LineChart>
