@@ -1,6 +1,4 @@
-from bdd_helper import Given, When, Then, And
-from fastapi.testclient import TestClient
-from api import app
+from bdd_helper import Given, When, Then
 from postgres import Postgres
 import requests
 
@@ -8,8 +6,8 @@ import requests
 
 def test_get_space_objects_variation(postgres: Postgres):
     Given('interval and test tables with data')
-    begin = '2025-01-01'
-    end = '2025-01-31'
+    begin = '2025-03-01'
+    end = '2025-03-31'
 
     When('get variation')
     response = requests.get(f"http://localhost:8000/get_space_objects_variation/?begin={begin}&end={end}")

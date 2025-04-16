@@ -57,8 +57,22 @@ services:
     environment:
       PG_URL: "postgresql://postgres:5432/postgres?user=postgres&password=postgres"
       DISCOWEB_TOKEN: ${DISCOWEB_TOKEN}
+    healthcheck:
+      test: [ "CMD-SHELL", "bash -c '</dev/tcp/localhost/8000'" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
     command: [ "uvicorn", "src.api:app", "--host", "0.0.0.0", "--port", "8000" ]
 
+  frontend:
+    image: gilcu2/space_frontend:latest
+    depends_on:
+      - backend
+    ports:
+      - "3000:80"
+    environment:
+      - API_HOST=backend
+    command: /entrypoint.sh
 
 volumes:
   postgres_data:

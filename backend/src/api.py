@@ -41,8 +41,8 @@ app.add_middleware(
 
 
 @app.get("/download_data/")
-def download_data_endpoint(begin: date = datetime.strptime('2025-01-01', "%Y-%m-%d").date(),
-                           end: date = datetime.strptime('2025-01-31', "%Y-%m-%d").date(),
+def download_data_endpoint(begin: date = datetime.strptime('2025-03-01', "%Y-%m-%d").date(),
+                           end: date = datetime.strptime('2025-03-31', "%Y-%m-%d").date(),
                            limit: int = 30,
                            suffix: Optional[str] = None) -> dict:
     launches_data, reentries_data = download_data(begin, end, limit, suffix)
@@ -78,8 +78,13 @@ else:
     if rows == 0:
         print(f"App is starting up, downloading data...{rows}")
         download_data(
-            datetime.strptime('2025-04-01', "%Y-%m-%d").date(),
-            datetime.strptime('2025-04-31', "%Y-%m-%d").date(),
+            datetime.strptime('2025-03-01', "%Y-%m-%d").date(),
+            datetime.strptime('2025-03-31', "%Y-%m-%d").date(),
             100, ''
         )
-        print("Data downloaded")
+        download_data(
+            datetime.strptime('2025-04-01', "%Y-%m-%d").date(),
+            datetime.strptime('2025-04-30', "%Y-%m-%d").date(),
+            100, ''
+        )
+        print("Data downloaded 2025-03-01 to 2025-04-30")
