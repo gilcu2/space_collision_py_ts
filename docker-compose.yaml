@@ -47,6 +47,18 @@ services:
     environment:
       FLYWAY_CONNECT_RETRIES: 10
 
+  backend:
+    image: gilcu2/space_backend:latest
+    depends_on:
+      postgres:
+        condition: service_healthy
+    ports:
+      - "8000:8000"
+    environment:
+      PG_URL: "postgresql://postgres:5432/postgres?user=postgres&password=postgres"
+      DISCOWEB_TOKEN: ${DISCOWEB_TOKEN}
+    command: [ "uvicorn", "src.api:app", "--host", "0.0.0.0", "--port", "8000" ]
+
 
 volumes:
   postgres_data:
