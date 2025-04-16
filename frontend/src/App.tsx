@@ -59,7 +59,7 @@ function App() {
                     <LineChart data={data}>
                         <CartesianGrid stroke="#ccc" />
                         <XAxis dataKey="date" />
-                        <YAxis label={{ value: "Objects", angle: -90, position: "insideLeft" }} />
+                        <YAxis label={{ value: "Launches - Reentries", angle: -90, position: "center" }} />
                         <Tooltip />
                         <Line type="monotone" dataKey="variation" stroke="#ff7300" />
                     </LineChart>
