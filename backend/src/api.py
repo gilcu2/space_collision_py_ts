@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from typing_extensions import Optional
 import uvicorn
 import os
@@ -11,7 +12,6 @@ from dotenv import load_dotenv
 load_dotenv()
 
 disco_web_token = os.environ["DISCOWEB_TOKEN"]
-print(f'Token: {disco_web_token}')
 disco_web_client = DiscosWebClient(disco_web_token)
 pg_url = os.getenv("PG_URL", "postgresql://localhost:5432/postgres?user=postgres&password=postgres")
 postgres = Postgres(pg_url)
@@ -31,6 +31,14 @@ def download_data(begin, end, limit, suffix):
 
 app = FastAPI()
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 
 @app.get("/download_data/")
 def download_data_endpoint(begin: date = datetime.strptime('2025-01-01', "%Y-%m-%d").date(),
@@ -45,29 +53,33 @@ def download_data_endpoint(begin: date = datetime.strptime('2025-01-01', "%Y-%m-
 @app.get("/get_space_objects_variation/")
 def get_space_objects_variation(begin: date = datetime.strptime('2025-01-01', "%Y-%m-%d").date(),
                                 end: date = datetime.strptime('2025-01-31', "%Y-%m-%d").date(),
-                                suffix: Optional[str] = None,
-                                ) -> list[tuple]:
+                                suffix: str = "",
+                                ) -> dict:
     launches_per_day = postgres.get_number_by_day(f'launches{suffix}')
     reentries_per_day = postgres.get_number_by_day(f'reentries{suffix}')
 
     launches_dict = dict(launches_per_day)
     reentries_dict = dict(reentries_per_day)
 
+    days = []
     variations = []
     for i in range((end - begin).days + 1):
         day = begin + timedelta(days=i)
-        variations.append((day, launches_dict.get(day, 0) - reentries_dict.get(day, 0)))
+        days.append(day)
+        variations.append(launches_dict.get(day, 0) - reentries_dict.get(day, 0))
 
-    return variations
+    return {'days': days, 'variations': variations}
 
 
 if __name__ == "__main__":
     uvicorn.run("kpi_api:app", host='0.0.0.1', port=8000, reload=True)
 else:
-    print(f"App is starting up, downloading data...{disco_web_token}.")
-    download_data(
-        datetime.strptime('2025-01-01', "%Y-%m-%d").date(),
-        datetime.strptime('2025-01-31', "%Y-%m-%d").date(),
-        100, ''
-    )
-    print("Data downloaded")
+    rows = postgres.count_rows('launches')
+    if rows == 0:
+        print(f"App is starting up, downloading data...{rows}")
+        download_data(
+            datetime.strptime('2025-04-01', "%Y-%m-%d").date(),
+            datetime.strptime('2025-04-31', "%Y-%m-%d").date(),
+            100, ''
+        )
+        print("Data downloaded")

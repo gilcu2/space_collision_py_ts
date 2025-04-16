@@ -47,7 +47,9 @@ def test_get_space_objects_variation(postgres: Postgres):
 
     Then('is expected')
     assert response.status_code == 200
-    assert len(response.json()) == 31
+    result = response.json()
+    assert len(result['days']) == 31
+    assert len(result['variations']) == 31
 
 
     for table in tables:

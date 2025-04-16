@@ -48,6 +48,10 @@ class Postgres:
     def drop_table(self, table_name: str):
         self.command(f"DROP TABLE IF EXISTS {table_name} ")
 
+    def count_rows(self,table_name:str):
+        sql = f"SELECT Count(*) FROM {table_name}"
+        return self.query(sql)[0][0]
+
     def get_extremes(self, table_name: str, field_name: str) -> Optional[Extremes]:
         sql = f"SELECT Count(*),MIN(data->>{field_name}),MAX(data->>{field_name}) FROM {table_name}"
         [count, min_value, max_value] = self.query(sql)[0]

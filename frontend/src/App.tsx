@@ -13,59 +13,55 @@ function App() {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
 
-    const fetchTemperature = async () => {
+    const fetchSpaceVariations = async () => {
         if (!startDate || !endDate) return;
         setLoading(true);
         setError("");
 
         try {
             const response = await axios.get(
-                `https://archive-api.open-meteo.com/v1/era5`,
+                `http://localhost:8000/get_space_objects_variation/`,
                 {
                     params: {
-                        latitude: 52.52,
-                        longitude: 13.41,
-                        start_date: startDate,
-                        end_date: endDate,
-                        daily: "temperature_2m_max",
-                        timezone: "Europe/Berlin",
+                        begin: startDate,
+                        end: endDate,
                     },
                 }
             );
 
-            const time: string[] = response.data.daily.time;
-            const temps: number[] = response.data.daily.temperature_2m_max;
+            const time: string[] = response.data.days;
+            const variations: number[] = response.data.variations;
 
-            const result = time.map((t, i) => ({ date: t, temperature: temps[i] }));
+            const result = time.map((t, i) => ({ date: t, variation: variations[i] }));
             setData(result);
         } catch (err: any) {
-            setError("Failed to fetch data.");
+            setError(`Failed to fetch data. ${err}`);
         } finally {
             setLoading(false);
         }
     };
 
     return (
-        <div style={{ padding: "2rem", fontFamily: "Arial" }}>
-            <h2>🌤️ Temperature Chart</h2>
+        <div style={{ padding: "2rem", fontFamily: "Arial", width: '100%', height: 'auto' }}>
+            <h2>🌤️ Variation of objects in space</h2>
             <div style={{ marginBottom: "1rem" }}>
                 <input type="date" value={startDate} onChange={e => setStartDate(e.target.value)} />
                 <input type="date" value={endDate} onChange={e => setEndDate(e.target.value)} />
-                <button onClick={fetchTemperature} disabled={loading || !startDate || !endDate}>
-                    {loading ? "Loading..." : "Fetch"}
+                <button onClick={fetchSpaceVariations} disabled={loading || !startDate || !endDate}>
+                    {loading ? "Loading..." : "Fetch data"}
                 </button>
             </div>
 
             {error && <p style={{ color: "red" }}>{error}</p>}
 
             {data.length > 0 && (
-                <ResponsiveContainer width="100%" height={400}>
+                <ResponsiveContainer width="95%" height={400}>
                     <LineChart data={data}>
                         <CartesianGrid stroke="#ccc" />
                         <XAxis dataKey="date" />
                         <YAxis label={{ value: "°C", angle: -90, position: "insideLeft" }} />
                         <Tooltip />
-                        <Line type="monotone" dataKey="temperature" stroke="#ff7300" />
+                        <Line type="monotone" dataKey="variation" stroke="#ff7300" />
                     </LineChart>
                 </ResponsiveContainer>
             )}
