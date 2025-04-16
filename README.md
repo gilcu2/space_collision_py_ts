@@ -9,12 +9,17 @@
 
 ## Setup
 
+1. Create .env file with a valid DISCOWEB TOKEN:
+
+   ```sh
+   DISCOWEB_TOKEN=XXX
+   ```
+ 
 1. uv sync
 1. ./scripts/docker-build.sh
 1. docker-compose up
    
-   Start all services, run migrations, download 2025-03-01 to 2025-04-30 data.
-   Wait  until flow-deploy logs "Your flow 'update-flow' is being served"
+   Start all services, run migrations, download 2025-03-01 to 2025-04-30 data from discoweb api.
 
    Must be ready:
    - Postgres: http://localhost:5050
@@ -39,3 +44,9 @@ The tests require the services ready and Postgres populated with data
 
 
 ## Explanation
+
+The task was implemented with these components:
+- Backend by Fastapi with the following services:: 
+  - /download_data/: Call discoweb-api and populate the local postgres
+  - /get_space_objects_variation/: Compute the difference between launches and reentries per day
+- Frontend by Vite, React. Use the backend and plot the differences by day
