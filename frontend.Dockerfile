@@ -1,7 +1,7 @@
 FROM node:lts-alpine AS builder
 WORKDIR /app
 COPY . .
-RUN npm install -g pnpm && pnpm install && pnpm run build
+RUN npm install -g pnpm && pnpm install --prod && pnpm run build
 
 
 FROM nginx:alpine

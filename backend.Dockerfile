@@ -20,7 +20,7 @@ RUN pip install uv
 COPY pyproject.toml uv.lock .
 
 # Install dependencies using uv
-RUN uv pip install --system --no-cache-dir .
+RUN uv pip install --system --no-cache-dir --no-dev .
 
 # Copy the source code
 COPY src ./src
