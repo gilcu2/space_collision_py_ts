@@ -24,7 +24,7 @@
    Must be ready:
    - Postgres: http://localhost:5050
    - Backend: http://localhost:8000/docs
-   - Frontend: http://localhost:3000/docs
+   - Frontend: http://localhost:3000
 
 ## Checks
 
@@ -32,7 +32,8 @@ The tests require the services ready and Postgres populated with data
 
 ### Backend
 
-1. cd backend
+1. cp .env backend
+2. cd backend
 1. uv sync
 1. uv run pytest
 1. uv run ruff check
