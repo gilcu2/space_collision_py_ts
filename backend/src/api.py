@@ -79,12 +79,17 @@ else:
         print(f"App is starting up, downloading data...{rows}")
         download_data(
             datetime.strptime('2025-03-01', "%Y-%m-%d").date(),
-            datetime.strptime('2025-03-31', "%Y-%m-%d").date(),
+            datetime.strptime('2025-03-10', "%Y-%m-%d").date(),
             100, ''
         )
         download_data(
-            datetime.strptime('2025-04-01', "%Y-%m-%d").date(),
-            datetime.strptime('2025-04-30', "%Y-%m-%d").date(),
+            datetime.strptime('2025-04-11', "%Y-%m-%d").date(),
+            datetime.strptime('2025-04-20', "%Y-%m-%d").date(),
             100, ''
         )
-        print("Data downloaded 2025-03-01 to 2025-04-30")
+        download_data(
+            datetime.strptime('2025-04-21', "%Y-%m-%d").date(),
+            datetime.strptime('2025-04-31', "%Y-%m-%d").date(),
+            100, ''
+        )
+        print("Data downloaded 2025-03-01 to 2025-03-31")
