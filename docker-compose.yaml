@@ -50,8 +50,8 @@ services:
   backend:
     image: gilcu2/space_backend:latest
     depends_on:
-      postgres:
-        condition: service_healthy
+      flyway-postgres:
+        condition: service_completed_successfully
     ports:
       - "8000:8000"
     environment:
