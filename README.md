@@ -19,7 +19,7 @@
 1. ./scripts/docker-build.sh
 1. docker-compose up
    
-   Start all services, run migrations, download 2025-03-01 to 2025-04-30 data from discoweb api.
+   Start all services, run migrations, download 2025-01-01 to 2025-01-31 data from discoweb api.
 
    Must be ready:
    - Postgres: http://localhost:5050
