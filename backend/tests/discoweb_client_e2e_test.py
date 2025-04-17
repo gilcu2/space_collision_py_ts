@@ -15,8 +15,20 @@ def test_get_payloads_by_reentry(discos_web: DiscosWebClient):
     Then('is expected')
     assert len(payloads.data) == page_size
 
+def test_get_launches_without_data(discos_web: DiscosWebClient):
+    Given('interval')
+    begin=datetime.strptime('2025-01-01','%Y-%m-%d').date()
+    end=datetime.strptime('2025-01-02','%Y-%m-%d').date()
+    page_size=100
 
-def test_get_launches(discos_web: DiscosWebClient):
+
+    When('download')
+    launches=discos_web.get_launches(begin, end, page_size=page_size)
+
+    Then('is expected')
+    assert len(launches.data) == 0
+
+def test_get_launches_with_pagination(discos_web: DiscosWebClient):
     Given('interval')
     begin=datetime.strptime('2025-01-01','%Y-%m-%d').date()
     end=datetime.strptime('2025-01-31','%Y-%m-%d').date()
