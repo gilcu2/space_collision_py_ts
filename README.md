@@ -1,21 +1,21 @@
 # Full Stack Software Developer for Spacecraft Collision Avoidance Software task
 
-## Project requirements
+## Project requirements (tested in Linux)
 
 * Python 3.12
 * [uv](https://docs.astral.sh/uv/getting-started/installation/)
+* [pnpm](https://pnpm.io/)
 * [docker](https://docs.docker.com/engine/install/)
 * [compose](https://docs.docker.com/compose/install/)
 
 ## Setup
 
-1. Create .env file with a valid DISCOWEB TOKEN:
+1. Create .env file with a valid DISCOWEB token:
 
    ```sh
    DISCOWEB_TOKEN=XXX
    ```
  
-1. uv sync
 1. ./scripts/docker-build.sh
 1. docker-compose up
    
@@ -33,12 +33,14 @@ The tests require the services ready and Postgres populated with data
 ### Backend
 
 1. cd backend
+1. uv sync
 1. uv run pytest
 1. uv run ruff check
 
 ### Frontend
 
 1. cd frontend
+2. pnpm install
 1. pnpm test
 1. pnpm lint
 
