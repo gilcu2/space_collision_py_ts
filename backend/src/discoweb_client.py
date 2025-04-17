@@ -40,8 +40,7 @@ class DiscosWebClient:
         try:
             pagination = api_result['meta']['pagination']
         except Exception as e:
-            print(f"Problem with pagination: {api_result}")
-            raise e
+            raise  Exception(f"Problem with pagination: {api_result} {e}")
 
         return Result(api_result['data'], pagination['currentPage'], pagination['totalPages'])
 
@@ -59,7 +58,13 @@ class DiscosWebClient:
 
         }
         api_result = self.get('launches', params)
-        pagination = api_result['meta']['pagination']
+
+        try:
+            pagination = api_result['meta']['pagination']
+        except Exception as e:
+            raise  Exception(f"Problem with pagination: {api_result} {e}")
+
+
         return Result(api_result['data'], pagination['currentPage'], pagination['totalPages'])
 
     def get_reentries(self, begin: date, end: date,
@@ -72,5 +77,8 @@ class DiscosWebClient:
 
         }
         api_result = self.get('reentries', params)
-        pagination = api_result['meta']['pagination']
+        try:
+            pagination = api_result['meta']['pagination']
+        except Exception as e:
+            raise Exception(f"Problem with pagination: {api_result} {e}")
         return Result(api_result['data'], pagination['currentPage'], pagination['totalPages'])
