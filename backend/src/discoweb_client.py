@@ -36,7 +36,13 @@ class DiscosWebClient:
 
         }
         api_result = self.get('objects', params)
-        pagination = api_result['meta']['pagination']
+
+        try:
+            pagination = api_result['meta']['pagination']
+        except Exception as e:
+            print(f"Problem with pagination: {api_result}")
+            raise e
+
         return Result(api_result['data'], pagination['currentPage'], pagination['totalPages'])
 
     def get_payloads_by_reentry(self, begin: date, end: date, page_size: int = 30, page: int = 1) -> Result:
