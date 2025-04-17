@@ -1,10 +1,10 @@
 import {render, screen, fireEvent} from "@testing-library/react";
 import axios from "axios";
 import {vi} from "vitest";
-import App from './App';
+import App from '../src/App';
 
 vi.mock("axios");
-const mockedAxios = axios as jest.Mocked<typeof axios>;
+const mockedAxios = axios as unknown as vi.Mocked<typeof axios>;
 
 test('renders hello message', () => {
     render(<App/>);
