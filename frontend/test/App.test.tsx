@@ -29,8 +29,8 @@ describe("Fetch data button", () => {
             "http://localhost:8000/get_space_objects_variation/",
             {
                 "params": {
-                    "begin": "2025-03-01",
-                    "end": "2025-03-31",
+                    "begin": "2025-01-01",
+                    "end": "2025-01-31",
                 },
             },
         );

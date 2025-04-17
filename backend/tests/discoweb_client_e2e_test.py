@@ -44,7 +44,7 @@ def test_get_launches_with_pagination(discos_web: DiscosWebClient):
 def test_get_reentries(discos_web: DiscosWebClient):
     Given('interval')
     begin=datetime.strptime('2025-01-01','%Y-%m-%d').date()
-    end=datetime.strptime('2025-01-31','%Y-%m-%d').date()
+    end=datetime.strptime('2025-01-10','%Y-%m-%d').date()
     page_size=10
 
 
