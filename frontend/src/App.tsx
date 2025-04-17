@@ -7,8 +7,8 @@ import {
 type DataPoint = { date: string; variation: number };
 
 function App() {
-    const [startDate, setStartDate] = useState("2025-03-01");
-    const [endDate, setEndDate] = useState("2025-03-31");
+    const [startDate, setStartDate] = useState("2025-01-01");
+    const [endDate, setEndDate] = useState("2025-01-31");
     const [data, setData] = useState<DataPoint[]>([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
