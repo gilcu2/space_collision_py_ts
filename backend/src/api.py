@@ -83,18 +83,18 @@ else:
     if rows == 0:
         print(f"App is starting up, downloading data...{rows}")
         download_data(
-            datetime.strptime('2025-03-01', "%Y-%m-%d").date(),
-            datetime.strptime('2025-03-10', "%Y-%m-%d").date(),
+            datetime.strptime('2025-01-01', "%Y-%m-%d").date(),
+            datetime.strptime('2025-01-10', "%Y-%m-%d").date(),
             100, ''
         )
         download_data(
-            datetime.strptime('2025-03-11', "%Y-%m-%d").date(),
-            datetime.strptime('2025-03-20', "%Y-%m-%d").date(),
+            datetime.strptime('2025-01-11', "%Y-%m-%d").date(),
+            datetime.strptime('2025-01-20', "%Y-%m-%d").date(),
             100, ''
         )
         download_data(
-            datetime.strptime('2025-03-21', "%Y-%m-%d").date(),
-            datetime.strptime('2025-03-31', "%Y-%m-%d").date(),
+            datetime.strptime('2025-01-21', "%Y-%m-%d").date(),
+            datetime.strptime('2025-01-31', "%Y-%m-%d").date(),
             100, ''
         )
-        logger.info("Data downloaded 2025-03-01 to 2025-03-31")
+        logger.info("Data downloaded 2025-01-01 to 2025-01-31")
